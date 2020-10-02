@@ -1,6 +1,7 @@
 package com.anand.billing.controller;
 
 import com.anand.billing.model.components.Invoice;
+import com.anand.billing.service.BillWriter;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ public class BillController {
   public Invoice createInvoice(
       @RequestBody final Invoice invoice) throws Exception {
     System.out.println(invoice.toString());
+    new BillWriter(invoice, "bill.pdf").writeContent();
     return invoice;
   }
 }

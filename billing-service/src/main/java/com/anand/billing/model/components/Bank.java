@@ -17,4 +17,15 @@ public class Bank {
   @JsonProperty(IFSC)
   private String ifsc;
 
+  public String getNameOfBank() {
+    return nameOfBank;
+  }
+
+  public String getAccountNumber() {
+    return accountNumber;
+  }
+
+  public String getIfsc() {
+    return ifsc;
+  }
 }

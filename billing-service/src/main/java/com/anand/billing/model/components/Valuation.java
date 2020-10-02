@@ -23,4 +23,24 @@ public class Valuation {
 
   @JsonProperty(RS_IN_WORDS)
   private String rsInWords;
+
+  public double getAmount() {
+    return amount;
+  }
+
+  public double getTotal() {
+    return total;
+  }
+
+  public int getRoundOff() {
+    return roundOff;
+  }
+
+  public double getGrandTotal() {
+    return grandTotal;
+  }
+
+  public String getRsInWords() {
+    return rsInWords;
+  }
 }

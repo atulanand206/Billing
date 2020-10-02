@@ -29,4 +29,27 @@ public class Entity {
   @JsonProperty(FIRM_ADDRESS)
   private String firmAddress;
 
+  public String getGstin() {
+    return gstin;
+  }
+
+  public String getMobileNumber() {
+    return mobileNumber;
+  }
+
+  public String getFirm() {
+    return firm;
+  }
+
+  public String getProprietor() {
+    return proprietor;
+  }
+
+  public String getHomeAddress() {
+    return homeAddress;
+  }
+
+  public String getFirmAddress() {
+    return firmAddress;
+  }
 }

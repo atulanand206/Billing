@@ -8,7 +8,6 @@ public class Particular {
   public static final String PERMIT_NUMBER = "permit_number";
   public static final String HSN_CODE = "hsn_code";
   public static final String QUANTITY_VALUE = "quantity_value";
-  public static final String QUANTITY_UNIT = "quantity_unit";
 
   @JsonProperty(VEHICLE_NUMBER)
   private String vehicleNumber;
@@ -22,6 +21,19 @@ public class Particular {
   @JsonProperty(QUANTITY_VALUE)
   private int quantityValue;
 
-  @JsonProperty(QUANTITY_UNIT)
-  private String quantityUnit;
+  public String getVehicleNumber() {
+    return vehicleNumber;
+  }
+
+  public String getPermitNumber() {
+    return permitNumber;
+  }
+
+  public String getHsnCode() {
+    return hsnCode;
+  }
+
+  public int getQuantityValue() {
+    return quantityValue;
+  }
 }
