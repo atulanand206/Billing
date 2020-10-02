@@ -53,4 +53,44 @@ public class Invoice {
 
   @JsonProperty(AUTHORISED_SIGNATORY)
   private String authorisedSignatory;
+
+  public Entity getEntity() {
+    return entity;
+  }
+
+  public int getInvoiceNumber() {
+    return invoiceNumber;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public Target getTarget() {
+    return target;
+  }
+
+  public List<Particular> getParticulars() {
+    return particulars;
+  }
+
+  public Rates getRates() {
+    return rates;
+  }
+
+  public Valuation getValuation() {
+    return valuation;
+  }
+
+  public Trip getTripDetails() {
+    return tripDetails;
+  }
+
+  public Bank getBankDetails() {
+    return bankDetails;
+  }
+
+  public String getAuthorisedSignatory() {
+    return authorisedSignatory;
+  }
 }

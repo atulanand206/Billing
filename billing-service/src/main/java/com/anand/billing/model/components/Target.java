@@ -7,6 +7,7 @@ public class Target {
   public static final String BILL_TO = "bill_to";
   public static final String ADDRESS = "address";
   public static final String GSTIN = "gstin";
+  public static final String STATE_NAME = "state_name";
   public static final String STATE_CODE = "state_code";
 
   @JsonProperty(BILL_TO)
@@ -18,9 +19,29 @@ public class Target {
   @JsonProperty(GSTIN)
   private String gstin;
 
+  @JsonProperty(STATE_NAME)
+  private String stateName;
+
   @JsonProperty(STATE_CODE)
   private int stateCode;
 
+  public String getBillTo() {
+    return billTo;
+  }
 
+  public String getAddress() {
+    return address;
+  }
 
+  public String getGstin() {
+    return gstin;
+  }
+
+  public String getStateName() {
+    return stateName;
+  }
+
+  public int getStateCode() {
+    return stateCode;
+  }
 }

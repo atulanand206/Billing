@@ -10,6 +10,7 @@ public class Rates {
   public static final String IGST_RATE = "igst_rate";
   public static final String RATE_VALUE = "rate_value";
   public static final String RATE_UNIT = "rate_unit";
+  public static final String QUANTITY_UNIT = "quantity_unit";
 
   @JsonProperty(GST_RATE)
   private double gstRate;
@@ -29,4 +30,34 @@ public class Rates {
   @JsonProperty(RATE_UNIT)
   private String rateUnit;
 
+  @JsonProperty(QUANTITY_UNIT)
+  private String quantityUnit;
+
+  public double getGstRate() {
+    return gstRate;
+  }
+
+  public double getSgstRate() {
+    return sgstRate;
+  }
+
+  public double getCgstRate() {
+    return cgstRate;
+  }
+
+  public double getIgstRate() {
+    return igstRate;
+  }
+
+  public double getRateValue() {
+    return rateValue;
+  }
+
+  public String getRateUnit() {
+    return rateUnit;
+  }
+
+  public String getQuantityUnit() {
+    return quantityUnit;
+  }
 }

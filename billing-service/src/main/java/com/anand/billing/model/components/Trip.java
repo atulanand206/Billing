@@ -25,4 +25,23 @@ public class Trip {
   @JsonProperty(DRIVER_MOBILE_NUMBER)
   private String driverMobileNumber;
 
+  public String getFrom() {
+    return from;
+  }
+
+  public String getTo() {
+    return to;
+  }
+
+  public String getCorryNumber() {
+    return corryNumber;
+  }
+
+  public String getDriverNameAndAddress() {
+    return driverNameAndAddress;
+  }
+
+  public String getDriverMobileNumber() {
+    return driverMobileNumber;
+  }
 }
