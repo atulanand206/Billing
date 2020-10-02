@@ -1,0 +1,62 @@
+{
+  "entity": {
+    "gstin": "20AACFI2143J2ZW",
+    "mobile_number": "9876543210",
+    "firm": "M/s SKS",
+    "proprietor": "SKS",
+    "home_address": "ITO, Dtg",
+    "firm_address": "Craser"
+  },
+  "invoice_number": 1,
+  "date": "12/08/2020",
+  "target": {
+    "bill_to": "IES",
+    "address": "Abadganj",
+    "gstin": "20AACFI2143J2ZW",
+    "state_code": 20
+  },
+  "particulars": [
+    {
+      "vehicle_number": "JH03D9847",
+      "permit_number": "F82000329/51",
+      "hsn_code": "",
+      "quantity_value":450,
+      "quantity_unit": "(MT/CFT)"
+    },
+    {
+      "vehicle_number": "JH03D9847",
+      "permit_number": "F82000329/51",
+      "hsn_code": "",
+      "quantity_value":450,
+      "quantity_unit": "(MT/CFT)"
+    }
+  ],
+  "rates": {
+    "gst_rate": 5,
+    "sgst_rate": 2.5,
+    "cgst_rate": 2.5,
+    "igst_rate": 0,
+    "rate_value": 28,
+    "rate_unit": "(MT/CFT)"
+  },
+  "valuation": {
+    "amount": 88200,
+    "total": 88200,
+    "round_off": 0,
+    "grand_total": 92160.00,
+    "rs_in_words": "Ninety two thousands"
+  },
+  "trip_details": {
+    "from": "Sehra",
+    "to": "Rajhara",
+    "corry_number": "",
+    "driver_name_and_address": "",
+    "driver_mobile_number": ""
+  },
+  "bank_details": {
+    "name_of_bank": "",
+    "account_number": "",
+    "ifsc": ""
+  },
+  "authorised_signatory": "S"
+}
