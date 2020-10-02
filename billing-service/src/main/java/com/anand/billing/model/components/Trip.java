@@ -6,7 +6,7 @@ public class Trip {
 
   public static final String FROM = "from";
   public static final String TO = "to";
-  public static final String CORRY_NUMBER = "corry_number";
+  public static final String LORRY_NUMBER = "lorry_number";
   public static final String DRIVER_NAME_AND_ADDRESS = "driver_name_and_address";
   public static final String DRIVER_MOBILE_NUMBER = "driver_mobile_number";
 
@@ -16,8 +16,8 @@ public class Trip {
   @JsonProperty(TO)
   private String to;
 
-  @JsonProperty(CORRY_NUMBER)
-  private String corryNumber;
+  @JsonProperty(LORRY_NUMBER)
+  private String lorryNumber;
 
   @JsonProperty(DRIVER_NAME_AND_ADDRESS)
   private String driverNameAndAddress;
@@ -33,8 +33,8 @@ public class Trip {
     return to;
   }
 
-  public String getCorryNumber() {
-    return corryNumber;
+  public String getLorryNumber() {
+    return lorryNumber;
   }
 
   public String getDriverNameAndAddress() {

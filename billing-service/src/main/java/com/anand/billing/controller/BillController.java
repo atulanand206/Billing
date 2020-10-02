@@ -1,7 +1,9 @@
 package com.anand.billing.controller;
 
-import com.anand.billing.model.components.Invoice;
+import com.anand.billing.model.components.Bill;
+import com.anand.billing.model.components.Page;
 import com.anand.billing.service.BillWriter;
+import java.util.Calendar;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,10 +18,11 @@ public class BillController {
       value = "/invoice",
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public Invoice createInvoice(
-      @RequestBody final Invoice invoice) throws Exception {
+  public Bill createInvoice(
+      @RequestBody final Bill invoice) throws Exception {
     System.out.println(invoice.toString());
-    new BillWriter(invoice, "bill.pdf").writeContent();
+    new BillWriter(invoice.getInvoice(), "bill.pdf", invoice.getParticulars(),
+        new Page(Calendar.getInstance().getTime(), 251)).writeContent();
     return invoice;
   }
 }
