@@ -2,10 +2,12 @@ package com.anand.billing.service;
 
 import com.anand.billing.model.components.Entity;
 import com.anand.billing.model.components.Invoice;
+import com.anand.billing.model.components.Page;
 import com.anand.billing.model.components.Particular;
 import com.anand.billing.model.components.Rates;
 import com.anand.billing.model.components.Target;
 import com.anand.billing.model.components.Trip;
+import com.anand.billing.utils.EnglishNumberToWords;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
@@ -13,8 +15,6 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.IBlockElement;
-import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.element.LineSeparator;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.HorizontalAlignment;
@@ -24,15 +24,55 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.text.WordUtils;
+import static com.anand.billing.utils.Strings.ACCOUNT_NUMBER;
+import static com.anand.billing.utils.Strings.AMOUNT;
+import static com.anand.billing.utils.Strings.AUTHORISED_SIGNATORY;
+import static com.anand.billing.utils.Strings.CGST;
+import static com.anand.billing.utils.Strings.CODE;
+import static com.anand.billing.utils.Strings.DATE;
+import static com.anand.billing.utils.Strings.FROM_TO;
+import static com.anand.billing.utils.Strings.GRAND_TOTAL;
+import static com.anand.billing.utils.Strings.GSTIN;
+import static com.anand.billing.utils.Strings.GST_RATE;
+import static com.anand.billing.utils.Strings.HSN_CODE;
+import static com.anand.billing.utils.Strings.IFSC;
+import static com.anand.billing.utils.Strings.IGST;
+import static com.anand.billing.utils.Strings.INVOICE_NO;
+import static com.anand.billing.utils.Strings.MOB;
+import static com.anand.billing.utils.Strings.MS;
+import static com.anand.billing.utils.Strings.NAME_OF_BANK;
+import static com.anand.billing.utils.Strings.PERMIT_NUMBER;
+import static com.anand.billing.utils.Strings.PROP;
+import static com.anand.billing.utils.Strings.QUANTITY;
+import static com.anand.billing.utils.Strings.RATE;
+import static com.anand.billing.utils.Strings.ROUND_OFF;
+import static com.anand.billing.utils.Strings.RS_IN_WORDS;
+import static com.anand.billing.utils.Strings.SGST;
+import static com.anand.billing.utils.Strings.SL_NO;
+import static com.anand.billing.utils.Strings.STATE;
+import static com.anand.billing.utils.Strings.TAX_INVOICE;
+import static com.anand.billing.utils.Strings.TOTAL;
+import static com.anand.billing.utils.Strings.VEHICLE_NUMBER;
 
 public class BillWriter {
 
-  private final Invoice fInvoice;
+  private final Invoice fConfiguration;
   private final Document fDocument;
+  private final List<Particular> fParticulars;
+  private final Page fPage;
 
-  public BillWriter(final Invoice invoice, final String fileName)
+  public BillWriter(
+      final Invoice configuration,
+      final String fileName,
+      final List<Particular> particulars,
+      final Page page)
       throws IOException {
-    fInvoice = invoice;
+    fConfiguration = configuration;
+    fParticulars = particulars;
+    page.setTotal(getTotal(configuration.getRates(), particulars));
+    page.setGrandTotal(grandTotal(configuration.getRates(), page.getTotal()));
+    fPage = page;
     PdfWriter writer = new PdfWriter(fileName);
     PdfDocument pdf = new PdfDocument(writer);
     fDocument = new Document(pdf);
@@ -51,7 +91,10 @@ public class BillWriter {
     fDocument.add(addTargetTable());
     fDocument.add(addParticulars());
     addBlankCell();
-    addCells(footer());
+    addCells(getTotalInWords());
+    addBlankCell();
+    addBlankCell();
+    addCells(getSignatory());
     fDocument.close();
   }
 
@@ -74,7 +117,7 @@ public class BillWriter {
   private List<Cell> addHeader() {
     List<Cell> cells = new ArrayList<>();
     Cell taxInvoiceChunk = new Cell()
-        .add("Tax Invoice")
+        .add(TAX_INVOICE)
         .setUnderline(1, -2)
         .setWidthPercent(100)
         .setTextAlignment(TextAlignment.CENTER);
@@ -85,10 +128,10 @@ public class BillWriter {
   private Table addHeaderInfo() {
     Table table = new Table(new float[]{300F, 300F}).setBorder(Border.NO_BORDER);
     Cell gstinChunk = new Cell(3, 1)
-        .add(String.format("GSTIN-%s", fInvoice.getEntity().getGstin()));
+        .add(String.format(GSTIN, fConfiguration.getEntity().getGstin()));
     Cell mobileChunk = new Cell()
         .setTextAlignment(TextAlignment.RIGHT)
-        .add(String.format("Mob.-%s", fInvoice.getEntity().getMobileNumber()));
+        .add(String.format(MOB, fConfiguration.getEntity().getMobileNumber()));
     table.addCell(gstinChunk.setBorder(Border.NO_BORDER));
     table.addCell(mobileChunk.setBorder(Border.NO_BORDER));
     return table;
@@ -96,14 +139,14 @@ public class BillWriter {
 
   private List<Cell> addEntityInfo() {
     List<Cell> cells = new ArrayList<>();
-    Entity entity = fInvoice.getEntity();
+    Entity entity = fConfiguration.getEntity();
     Cell entityName = new Cell()
         .setFontSize(20)
         .setWidth(UnitValue.createPercentValue(100))
         .setHorizontalAlignment(HorizontalAlignment.CENTER)
         .add(entity.getFirm());
     Cell entityProp = new Cell()
-        .add(String.format("Prop. - %s", entity.getProprietor()));
+        .add(String.format(PROP, entity.getProprietor()));
     Cell entityHomeAddress = new Cell()
         .add(entity.getHomeAddress());
     Cell entityFirmAddress = new Cell()
@@ -119,11 +162,11 @@ public class BillWriter {
     List<Cell> cells = new ArrayList<>();
     Cell invoiceNumber = new Cell()
         .setTextAlignment(TextAlignment.RIGHT)
-        .add(String.format("Invoice No. - %s", fInvoice.getInvoiceNumber()));
+        .add(String.format(INVOICE_NO, fPage.getInvoiceNumber()));
     Cell date = new Cell()
         .setTextAlignment(TextAlignment.RIGHT)
-        .add(String.format("Date - %s",
-            new SimpleDateFormat("dd/MM/yyyy").format(fInvoice.getDate())));
+        .add(String.format(DATE,
+            new SimpleDateFormat(Invoice.OUTPUT_DATE_FORMAT).format(fPage.getDate())));
     cells.add(invoiceNumber);
     cells.add(date);
     return cells;
@@ -131,11 +174,11 @@ public class BillWriter {
 
   private List<Cell> addTarget() {
     List<Cell> cells = new ArrayList<>();
-    Target target = fInvoice.getTarget();
+    Target target = fConfiguration.getTarget();
     Cell targetName = new Cell()
         .setTextAlignment(TextAlignment.CENTER)
         .setFontSize(18)
-        .add(String.format("M/s %s", target.getBillTo()));
+        .add(String.format(MS, target.getBillTo()));
     Cell targetAddress = new Cell()
         .setTextAlignment(TextAlignment.CENTER)
         .add(target.getAddress());
@@ -145,16 +188,16 @@ public class BillWriter {
   }
 
   private Table addTargetTable() {
-    Target target = fInvoice.getTarget();
+    Target target = fConfiguration.getTarget();
     Table table = new Table(new float[]{300F, 200F, 100F}).setBorder(Border.NO_BORDER);
     Cell gstin = new Cell()
-        .add(String.format("GSTIN- %s", target.getGstin()));
+        .add(String.format(GSTIN, target.getGstin()));
     Cell state = new Cell()
         .setTextAlignment(TextAlignment.RIGHT)
-        .add(String.format("State- %s", target.getStateName()));
+        .add(String.format(STATE, target.getStateName()));
     Cell stateCode = new Cell()
         .setTextAlignment(TextAlignment.RIGHT)
-        .add(String.format("Code- %s", target.getStateCode()));
+        .add(String.format(CODE, target.getStateCode()));
     table.addCell(gstin.setBorder(Border.NO_BORDER));
     table.addCell(state.setBorder(Border.NO_BORDER));
     table.addCell(stateCode.setBorder(Border.NO_BORDER));
@@ -162,30 +205,46 @@ public class BillWriter {
   }
 
   private Table addParticulars() {
-    List<Particular> particulars = fInvoice.getParticulars();
-    Rates rates = fInvoice.getRates();
-    Trip tripDetails = fInvoice.getTripDetails();
+    List<Particular> particulars = fParticulars;
+    Rates rates = fConfiguration.getRates();
+    Trip tripDetails = fConfiguration.getTripDetails();
     Table table = new Table(new float[]{10F, 90F, 90F, 50F, 60F, 60F, 60F, 80F})
         .setFontSize(10)
         .setBorder(new SolidBorder(1));
-    getHeaders(fInvoice.getRates().getQuantityUnit()).forEach(
+    getHeaders(fConfiguration.getRates().getQuantityUnit()).forEach(
         content -> table.addHeaderCell(content).setTextAlignment(TextAlignment.CENTER));
     for (int i = 0; i < particulars.size(); i++) {
       addTableCells(addParticularRowToTable(rates, i, particulars.get(i)), table);
     }
     addBlankCells(table);
-    addTableCells(addTotalRow(rates), table);
+    addTableCells(addTotalRow(rates, fPage.getTotal()), table);
     addBlankCells(table);
-    addTableCells(addSgstRow(rates), table);
+    addTableCells(addSgstRow(rates, fPage.getTotal()), table);
     table.addCell(getFromToCell(tripDetails));
-    addTableCells(addCgstRow(rates), table);
-    table.addCell(getCorryNoCell(tripDetails));
-    addTableCells(addIgstRow(rates), table);
-    table.addCell(getDriverNameAndAddressCell(tripDetails));
+    addTableCells(addCgstRow(rates, fPage.getTotal()), table);
+    table.addCell(getBankCell());
+    addTableCells(addIgstRow(rates, fPage.getTotal()), table);
+    table.addCell(getAccountNumberCell());
     addTableCells(addRoundOffRow(), table);
-    table.addCell(getMobileNumberCell(tripDetails));
+    table.addCell(getIFSCCell());
     addTableCells(addGrandTotalRow(), table);
     return table;
+  }
+
+  private int getTotal(
+      final Rates rates,
+      final List<Particular> particulars) {
+    int total = 0;
+    for (Particular particular : particulars) {
+      total += particular.getQuantityValue() * rates.getRateValue();
+    }
+    return total;
+  }
+
+  private int grandTotal(
+      final Rates rates,
+      final int total) {
+    return (int) (total + (total * (rates.getSgstRate() + rates.getCgstRate()))/100);
   }
 
   private void addTableCells(List<Cell> cells, Table table) {
@@ -200,14 +259,14 @@ public class BillWriter {
 
   private List<String> getHeaders(final String unit) {
     List<String> headers = new ArrayList<>();
-    headers.add("Sl. No.");
-    headers.add("Vehicle number");
-    headers.add("Permit number");
-    headers.add("HSN Code");
-    headers.add(String.format("Quantity\n%s", unit));
-    headers.add(String.format("Rate\n%s", unit));
-    headers.add("GST Rate");
-    headers.add("Amount");
+    headers.add(SL_NO);
+    headers.add(VEHICLE_NUMBER);
+    headers.add(PERMIT_NUMBER);
+    headers.add(HSN_CODE);
+    headers.add(String.format(QUANTITY, unit));
+    headers.add(String.format(RATE, unit));
+    headers.add(GST_RATE);
+    headers.add(AMOUNT);
     return headers;
   }
 
@@ -228,17 +287,17 @@ public class BillWriter {
     return cells;
   }
 
-  private List<Cell> addTotalRow(final Rates rates) {
+  private List<Cell> addTotalRow(final Rates rates, final int total) {
     List<Cell> cells = new ArrayList<>();
-    cells.add(new Cell().add("Total"));
+    cells.add(new Cell().add(TOTAL));
     cells.add(new Cell().add(getPercentage((int) rates.getGstRate())));
-    cells.add(new Cell().add(String.valueOf((int) fInvoice.getValuation().getTotal())));
+    cells.add(new Cell().add(String.valueOf((int) total)));
     return cells;
   }
 
   private List<Cell> addRoundOffRow() {
     List<Cell> cells = new ArrayList<>();
-    cells.add(new Cell().add("R/off."));
+    cells.add(new Cell().add(ROUND_OFF));
     cells.add(new Cell().add(""));
     cells.add(new Cell().add(""));
     return cells;
@@ -246,30 +305,34 @@ public class BillWriter {
 
   private List<Cell> addGrandTotalRow() {
     List<Cell> cells = new ArrayList<>();
-    cells.add(new Cell().add("G.Total"));
+    cells.add(new Cell().add(GRAND_TOTAL));
     cells.add(new Cell().add(""));
-    cells.add(new Cell().add(String.valueOf((int) fInvoice.getValuation().getGrandTotal())));
+    cells.add(new Cell().add(String.valueOf(fPage.getGrandTotal())));
     return cells;
   }
 
-  private List<Cell> addSgstRow(final Rates rates) {
-    return getXgstRow("SGST @", rates.getSgstRate(), false);
+  private List<Cell> addSgstRow(final Rates rates, final int total) {
+    return getXgstRow(SGST, rates.getSgstRate(), false, total);
   }
 
-  private List<Cell> addCgstRow(final Rates rates) {
-    return getXgstRow("CGST @", rates.getCgstRate(), false);
+  private List<Cell> addCgstRow(final Rates rates, final int total) {
+    return getXgstRow(CGST, rates.getCgstRate(), false, total);
   }
 
-  private List<Cell> addIgstRow(final Rates rates) {
-    return getXgstRow("IGST @", rates.getIgstRate(), true);
+  private List<Cell> addIgstRow(final Rates rates, final int total) {
+    return getXgstRow(IGST, rates.getIgstRate(), true, total);
   }
 
-  private List<Cell> getXgstRow(final String xgst, final double xgstRate, final boolean skip) {
+  private List<Cell> getXgstRow(
+      final String xgst,
+      final double xgstRate,
+      final boolean skip,
+      final int total) {
     List<Cell> cells = new ArrayList<>();
     cells.add(new Cell().add(xgst));
     cells.add(new Cell().add(skip ? "" : getPercentage(xgstRate)));
     cells.add(new Cell().add(skip ? "" :
-        String.valueOf((int) ((fInvoice.getValuation().getTotal() * xgstRate) / 100))));
+        String.valueOf((int) ((total * xgstRate) / 100))));
     return cells;
   }
 
@@ -285,60 +348,49 @@ public class BillWriter {
     return new Cell().add(content).setTextAlignment(TextAlignment.CENTER);
   }
 
-  private Table addTripDetails() {
-    Table table = new Table(new float[]{324F}).setBorder(new SolidBorder(1));
-    List<Cell> cells = new ArrayList<>();
-    Trip tripDetails = fInvoice.getTripDetails();
-    cells.add(getFromToCell(tripDetails));
-    cells.add(getCorryNoCell(tripDetails));
-    cells.add(getDriverNameAndAddressCell(tripDetails));
-    cells.add(getMobileNumberCell(tripDetails));
-    cells.forEach(table::addCell);
-    return table;
-  }
-
-  private Cell getMobileNumberCell(final Trip tripDetails) {
+  private Cell getIFSCCell() {
     return new Cell(1, 5)
-        .add(String.format("Mobile Number: %s", tripDetails.getDriverMobileNumber()))
+        .add(String.format(IFSC, fConfiguration.getBankDetails().getIfsc()))
         .setTextAlignment(TextAlignment.LEFT)
         .setBorder(Border.NO_BORDER);
   }
 
-  private Cell getDriverNameAndAddressCell(final Trip tripDetails) {
+  private Cell getAccountNumberCell() {
     return new Cell(1, 5)
-        .add(String.format("Driver Name & Address: %s", tripDetails.getDriverNameAndAddress()))
+        .add(String.format(ACCOUNT_NUMBER, fConfiguration.getBankDetails().getAccountNumber()))
         .setTextAlignment(TextAlignment.LEFT)
         .setBorder(Border.NO_BORDER);
   }
 
-  private Cell getCorryNoCell(final Trip tripDetails) {
+  private Cell getBankCell() {
     return new Cell(1, 5)
-        .add(String.format("Corry No: %s", tripDetails.getCorryNumber()))
+        .add(String.format(NAME_OF_BANK, fConfiguration.getBankDetails().getNameOfBank()))
         .setTextAlignment(TextAlignment.LEFT)
         .setBorder(Border.NO_BORDER);
   }
 
   private Cell getFromToCell(final Trip tripDetails) {
     return new Cell(1, 5)
-        .add(String.format("From: %s To: %s", tripDetails.getFrom(), tripDetails.getTo()))
+        .add(String.format(FROM_TO, tripDetails.getFrom(), tripDetails.getTo()))
         .setTextAlignment(TextAlignment.LEFT)
         .setBorder(Border.NO_BORDER);
   }
 
-  private List<Cell> footer() {
+  private List<Cell> getTotalInWords() {
     List<Cell> cells = new ArrayList<>();
     cells.add(new Cell()
-        .add(String.format("Rs. in words: %s",fInvoice.getValuation().getRsInWords())));
+        .add(String.format(
+            RS_IN_WORDS,
+            WordUtils.capitalize(EnglishNumberToWords.convert(fPage.getGrandTotal())).trim())));
+    return cells;
+  }
+
+  private List<Cell> getSignatory() {
+    List<Cell> cells = new ArrayList<>();
     cells.add(new Cell()
-        .add(String.format("Name of Bank: %s", fInvoice.getBankDetails().getNameOfBank())));
+        .add(fConfiguration.getAuthorisedSignatory()).setTextAlignment(TextAlignment.RIGHT));
     cells.add(new Cell()
-        .add(String.format("A/c No.: %s", fInvoice.getBankDetails().getAccountNumber())));
-    cells.add(new Cell()
-        .add(String.format("IFSC Code: %s", fInvoice.getBankDetails().getIfsc())));
-    cells.add(new Cell()
-        .add(fInvoice.getAuthorisedSignatory()).setTextAlignment(TextAlignment.RIGHT));
-    cells.add(new Cell()
-        .add("Authorised Signatory").setTextAlignment(TextAlignment.RIGHT));
+        .add(AUTHORISED_SIGNATORY).setTextAlignment(TextAlignment.RIGHT));
     return cells;
   }
 }

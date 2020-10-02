@@ -5,10 +5,8 @@
     "firm": "M/s Shailendra Kumar Singh",
     "proprietor": "Shailendra Kumar Singh",
     "home_address": "Bye Pass Road, Income Tax Office, Daltonganj",
-    "firm_address": "Craser At.- Sehra, Satbarwa, Palamu (Jharkhand)"
+    "firm_address": "Crusher At.- Sehra, Satbarwa, Palamu (Jharkhand)"
   },
-  "invoice_number": 251,
-  "date": "12/08/2020",
   "target": {
     "bill_to": "Indian Electrical Services",
     "address": "Abadganj",
@@ -16,56 +14,6 @@
     "state_name": "Jharkhand",
     "state_code": 20
   },
-  "particulars": [
-    {
-      "vehicle_number": "JH03D9847",
-      "permit_number": "F82000329/51",
-      "hsn_code": "",
-      "quantity_value": 450
-    },
-    {
-      "vehicle_number": "JH03D9847",
-      "permit_number": "F82000329/51",
-      "hsn_code": "",
-      "quantity_value": 450
-    },
-    {
-      "vehicle_number": "JH03D9847",
-      "permit_number": "F82000329/51",
-      "hsn_code": "",
-      "quantity_value": 450
-    },
-    {
-      "vehicle_number": "JH03D9847",
-      "permit_number": "F82000329/51",
-      "hsn_code": "",
-      "quantity_value": 450
-    },
-    {
-      "vehicle_number": "JH03D9847",
-      "permit_number": "F82000329/51",
-      "hsn_code": "",
-      "quantity_value": 450
-    },
-    {
-      "vehicle_number": "JH03D9847",
-      "permit_number": "F82000329/51",
-      "hsn_code": "",
-      "quantity_value": 450
-    },
-    {
-      "vehicle_number": "JH03D9847",
-      "permit_number": "F82000329/51",
-      "hsn_code": "",
-      "quantity_value": 450
-    },
-    {
-      "vehicle_number": "JH03D9847",
-      "permit_number": "F82000329/51",
-      "hsn_code": "",
-      "quantity_value": 450
-    }
-  ],
   "rates": {
     "gst_rate": 5,
     "sgst_rate": 2.5,
@@ -75,24 +23,17 @@
     "rate_unit": "(MT/CFT)",
     "quantity_unit": "(MT/CFT)"
   },
-  "valuation": {
-    "amount": 88200,
-    "total": 88200,
-    "round_off": 0,
-    "grand_total": 92610.00,
-    "rs_in_words": "Ninety two thousand six hundred ten only"
-  },
   "trip_details": {
     "from": "Sehra",
     "to": "Rajhara",
-    "corry_number": "wertyu98765",
-    "driver_name_and_address": "Suman kumar, National Highway 75, South Redma, Rerma, Jharkhand 822101",
-    "driver_mobile_number": "98765432134"
+    "lorry_number": "",
+    "driver_name_and_address": "",
+    "driver_mobile_number": ""
   },
   "bank_details": {
-    "name_of_bank": "State Bank of India, Panchghani",
+    "name_of_bank": "State Bank of India, Narsanda",
     "account_number": "234567890987",
     "ifsc": "SBI0055225"
   },
-  "authorised_signatory": "Sanjay Kumar"
+  "authorised_signatory": "For Shailendra Kumar Singh"
 }
