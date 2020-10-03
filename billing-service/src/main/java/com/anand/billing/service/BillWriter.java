@@ -33,12 +33,11 @@ public class BillWriter {
   public BillWriter(
       final Configuration configuration,
       final String fileName,
-      final List<Particular> particulars,
       final Page page)
       throws IOException {
     fConfiguration = configuration;
-    fParticulars = particulars;
-    page.setTotal(getTotal(configuration.getRates(), particulars));
+    fParticulars = page.getParticulars();
+    page.setTotal(getTotal(configuration.getRates(), fParticulars));
     page.setGrandTotal(grandTotal(configuration.getRates(), page.getTotal()));
     fPage = page;
     PdfWriter writer = new PdfWriter(fileName);

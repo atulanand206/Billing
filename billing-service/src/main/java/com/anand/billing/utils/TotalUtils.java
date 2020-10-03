@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.text.WordUtils;
 import static com.anand.billing.utils.CalculationUtils.getPercentage;
-import static com.anand.billing.utils.Strings.CGST;
-import static com.anand.billing.utils.Strings.GRAND_TOTAL;
-import static com.anand.billing.utils.Strings.IGST;
-import static com.anand.billing.utils.Strings.ROUND_OFF;
-import static com.anand.billing.utils.Strings.RS_IN_WORDS;
-import static com.anand.billing.utils.Strings.SGST;
-import static com.anand.billing.utils.Strings.TOTAL;
+import static com.anand.billing.constants.Constants.CGST;
+import static com.anand.billing.constants.Constants.GRAND_TOTAL;
+import static com.anand.billing.constants.Constants.IGST;
+import static com.anand.billing.constants.Constants.ROUND_OFF;
+import static com.anand.billing.constants.Constants.RS_IN_WORDS;
+import static com.anand.billing.constants.Constants.SGST;
+import static com.anand.billing.constants.Constants.TOTAL;
 
 public class TotalUtils {
 

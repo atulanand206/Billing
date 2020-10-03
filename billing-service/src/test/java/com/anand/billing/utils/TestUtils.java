@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -19,7 +21,8 @@ public class TestUtils {
 
   private static final String INVOICE_ENDPOINT = "/bill/invoice";
 
-  public static String createInvoice(final MockMvc fMockMvc, final String fileName) throws Exception {
+  public static String createInvoice(final MockMvc fMockMvc, final String fileName)
+      throws Exception {
     String scriptJson = readFromJson(fileName).replace("\n", "");
     return fMockMvc.perform(createInvoiceRequestBuilder(scriptJson))
         .andExpect(status().isOk())
@@ -61,5 +64,13 @@ public class TestUtils {
       }
     }
     return records;
+  }
+
+  public static Stream<Arguments> singleArgumentStream(Object object) {
+    return Stream.of(Arguments.of(object));
+  }
+
+  public static Stream<Arguments> doubleArgumentStream(Object object1, Object object2) {
+    return Stream.of(Arguments.of(object1), Arguments.of(object2));
   }
 }

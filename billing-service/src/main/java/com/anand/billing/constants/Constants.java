@@ -1,6 +1,8 @@
-package com.anand.billing.utils;
+package com.anand.billing.constants;
 
-public class Strings {
+public class Constants {
+
+  public static final int PAGE_MAX_SIZE = 10;
 
   public static final String TAX_INVOICE = "Tax Invoice";
   public static final String GSTIN = "GSTIN- %s";

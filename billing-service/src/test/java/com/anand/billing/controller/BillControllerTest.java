@@ -1,7 +1,9 @@
 package com.anand.billing.controller;
 
 import com.anand.billing.TestApplicationConfiguration;
+import com.anand.billing.model.components.Page;
 import com.anand.billing.model.dto.Permit;
+import com.anand.billing.service.PermitToBillConvertor;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +48,8 @@ public class BillControllerTest {
   }
 
   private String bill(final String scriptJson, final String particularsJson) {
-    return String.format("{ \"configuration\":%s, \"particulars\":%s}", scriptJson, particularsJson);
+    return String.format("{ \"configuration\":%s, \"particulars\":%s}", scriptJson,
+        particularsJson);
   }
 
   private String list(final String particularJson) {
@@ -63,7 +66,7 @@ public class BillControllerTest {
   }
 
   @Test
-  void testReadFromCsv() throws Exception {
+  void testReadFromTsv() throws Exception {
     List<List<String>> lists = readFromCsv("test_ts.tsv");
     List<Permit> permits = new ArrayList<>();
     for (int i = 1; i < lists.size(); i++) {
@@ -71,5 +74,9 @@ public class BillControllerTest {
       permits.add(new Permit(item));
     }
     permits.forEach(System.out::println);
+    List<Page> pages = PermitToBillConvertor.convert(permits, 1);
+    pages.forEach(page -> page.getParticulars().forEach(
+        System.out::println
+    ));
   }
 }

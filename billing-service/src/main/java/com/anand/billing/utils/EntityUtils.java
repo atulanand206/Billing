@@ -6,7 +6,7 @@ import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import java.util.ArrayList;
 import java.util.List;
-import static com.anand.billing.utils.Strings.PROP;
+import static com.anand.billing.constants.Constants.PROP;
 
 public class EntityUtils {
 
