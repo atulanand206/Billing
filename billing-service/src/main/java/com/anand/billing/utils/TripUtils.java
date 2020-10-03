@@ -4,7 +4,7 @@ import com.anand.billing.model.components.Trip;
 import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.property.TextAlignment;
-import static com.anand.billing.utils.Strings.FROM_TO;
+import static com.anand.billing.constants.Constants.FROM_TO;
 
 public class TripUtils {
   public static Cell getFromToCell(final Trip tripDetails) {

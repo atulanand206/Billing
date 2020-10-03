@@ -21,8 +21,9 @@ public class BillController {
   public Bill createInvoice(
       @RequestBody final Bill invoice) throws Exception {
     System.out.println(invoice.toString());
-    new BillWriter(invoice.getConfiguration(), "bill.pdf", invoice.getParticulars(),
-        new Page(Calendar.getInstance().getTime(), 251)).writeContent();
+    new BillWriter(invoice.getConfiguration(), "bill.pdf",
+        new Page(Calendar.getInstance().getTime(), 251, invoice.getParticulars()))
+        .writeContent();
     return invoice;
   }
 }

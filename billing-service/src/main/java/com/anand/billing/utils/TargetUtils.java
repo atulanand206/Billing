@@ -7,10 +7,10 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 import java.util.ArrayList;
 import java.util.List;
-import static com.anand.billing.utils.Strings.CODE;
-import static com.anand.billing.utils.Strings.GSTIN;
-import static com.anand.billing.utils.Strings.MS;
-import static com.anand.billing.utils.Strings.STATE;
+import static com.anand.billing.constants.Constants.CODE;
+import static com.anand.billing.constants.Constants.GSTIN;
+import static com.anand.billing.constants.Constants.MS;
+import static com.anand.billing.constants.Constants.STATE;
 
 public class TargetUtils {
 

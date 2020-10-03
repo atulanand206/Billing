@@ -7,10 +7,10 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 import java.util.ArrayList;
 import java.util.List;
-import static com.anand.billing.utils.Strings.AUTHORISED_SIGNATORY;
-import static com.anand.billing.utils.Strings.GSTIN;
-import static com.anand.billing.utils.Strings.MOB;
-import static com.anand.billing.utils.Strings.TAX_INVOICE;
+import static com.anand.billing.constants.Constants.AUTHORISED_SIGNATORY;
+import static com.anand.billing.constants.Constants.GSTIN;
+import static com.anand.billing.constants.Constants.MOB;
+import static com.anand.billing.constants.Constants.TAX_INVOICE;
 
 public class HeaderUtils {
 
