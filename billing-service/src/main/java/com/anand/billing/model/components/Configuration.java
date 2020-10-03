@@ -2,7 +2,7 @@ package com.anand.billing.model.components;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Invoice {
+public class Configuration {
 
   public static final String OUTPUT_DATE_FORMAT = "dd/MM/yyyy";
   public static final String TIME_ZONE = "IST";

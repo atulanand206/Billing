@@ -2,9 +2,7 @@ package com.anand.billing.controller;
 
 import com.anand.billing.TestApplicationConfiguration;
 import com.anand.billing.model.dto.Permit;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,10 +13,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import static com.anand.billing.utils.InvoiceUtils.createInvoice;
-import static com.anand.billing.utils.InvoiceUtils.createInvoiceRequestBuilder;
-import static com.anand.billing.utils.InvoiceUtils.readFromCsv;
-import static com.anand.billing.utils.InvoiceUtils.readFromJson;
+import static com.anand.billing.utils.TestUtils.createInvoiceRequestBuilder;
+import static com.anand.billing.utils.TestUtils.readFromCsv;
+import static com.anand.billing.utils.TestUtils.readFromJson;
 
 @SpringBootTest(
     properties = "spring.main.allow-bean-definition-overriding=true",
@@ -49,7 +46,7 @@ public class BillControllerTest {
   }
 
   private String bill(final String scriptJson, final String particularsJson) {
-    return String.format("{ \"invoice\":%s, \"particulars\":%s}", scriptJson, particularsJson);
+    return String.format("{ \"configuration\":%s, \"particulars\":%s}", scriptJson, particularsJson);
   }
 
   private String list(final String particularJson) {
