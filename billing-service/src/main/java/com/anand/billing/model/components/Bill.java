@@ -5,17 +5,17 @@ import java.util.List;
 
 public class Bill {
 
-  public static final String INVOICE = "invoice";
+  public static final String CONFIGURATION = "configuration";
   public static final String PARTICULARS = "particulars";
 
-  @JsonProperty(INVOICE)
-  private Invoice fInvoice;
+  @JsonProperty(CONFIGURATION)
+  private Configuration fConfiguration;
 
   @JsonProperty(PARTICULARS)
   private List<Particular> fParticulars;
 
-  public Invoice getInvoice() {
-    return fInvoice;
+  public Configuration getConfiguration() {
+    return fConfiguration;
   }
 
   public List<Particular> getParticulars() {

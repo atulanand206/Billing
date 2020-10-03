@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class InvoiceUtils {
+public class TestUtils {
 
   private static final String INVOICE_ENDPOINT = "/bill/invoice";
 
