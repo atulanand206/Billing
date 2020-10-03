@@ -3,7 +3,6 @@ package com.anand.billing.controller;
 import com.anand.billing.model.components.Bill;
 import com.anand.billing.model.components.Page;
 import com.anand.billing.service.BillWriter;
-import java.util.Calendar;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +20,11 @@ public class BillController {
   public Bill createInvoice(
       @RequestBody final Bill invoice) throws Exception {
     System.out.println(invoice.toString());
+    for (Page page : invoice.getPages()) {
+      page.calculateTotals(invoice.getConfiguration());
+    }
     new BillWriter(invoice.getConfiguration(), "bill.pdf",
-        new Page(Calendar.getInstance().getTime(), 251, invoice.getParticulars()))
+        invoice.getPages())
         .writeContent();
     return invoice;
   }

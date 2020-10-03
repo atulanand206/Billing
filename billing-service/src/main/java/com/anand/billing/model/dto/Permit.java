@@ -156,20 +156,8 @@ public class Permit {
     return null;
   }
 
-  public int getSlNo() {
-    return slNo;
-  }
-
   public String getPermitNo() {
     return permitNo;
-  }
-
-  public String getPassNo() {
-    return passNo;
-  }
-
-  public Date getPassValidity() {
-    return passValidity;
   }
 
   public Date getIssuedOn() {
@@ -180,36 +168,8 @@ public class Permit {
     return truckRegNo;
   }
 
-  public String getMineral() {
-    return mineral;
-  }
-
-  public String getMineralType() {
-    return mineralType;
-  }
-
   public int getMineralWt() {
     return mineralWt;
-  }
-
-  public String getSource() {
-    return source;
-  }
-
-  public String getDestination() {
-    return destination;
-  }
-
-  public String getConsignee() {
-    return consignee;
-  }
-
-  public String getCheckGate() {
-    return checkGate;
-  }
-
-  public int getDistance() {
-    return distance;
   }
 
   @Override

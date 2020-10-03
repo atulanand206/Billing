@@ -6,19 +6,19 @@ import java.util.List;
 public class Bill {
 
   public static final String CONFIGURATION = "configuration";
-  public static final String PARTICULARS = "particulars";
+  public static final String PAGES = "pages";
 
   @JsonProperty(CONFIGURATION)
   private Configuration fConfiguration;
 
-  @JsonProperty(PARTICULARS)
-  private List<Particular> fParticulars;
+  @JsonProperty(PAGES)
+  private List<Page> fPages;
 
   public Configuration getConfiguration() {
     return fConfiguration;
   }
 
-  public List<Particular> getParticulars() {
-    return fParticulars;
+  public List<Page> getPages() {
+    return fPages;
   }
 }

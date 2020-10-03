@@ -1,9 +1,16 @@
 package com.anand.billing.controller;
 
 import com.anand.billing.TestApplicationConfiguration;
+import com.anand.billing.model.components.Configuration;
 import com.anand.billing.model.components.Page;
 import com.anand.billing.model.dto.Permit;
+import com.anand.billing.service.BillWriter;
 import com.anand.billing.service.PermitToBillConvertor;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,5 +85,15 @@ public class BillControllerTest {
     pages.forEach(page -> page.getParticulars().forEach(
         System.out::println
     ));
+    Configuration configuration = readJSON();
+    for (Page page : pages) {
+      page.calculateTotals(configuration);
+    }
+    new BillWriter(configuration, "bill.pdf", pages).writeContent();
+  }
+
+  private Configuration readJSON() throws JsonParseException, JsonMappingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.readValue(readFromJson("invoice.json").replace("\n", ""), Configuration.class);
   }
 }
