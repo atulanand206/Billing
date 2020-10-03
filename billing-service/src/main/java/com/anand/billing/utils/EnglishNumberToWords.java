@@ -4,133 +4,71 @@ import java.text.DecimalFormat;
 
 public class EnglishNumberToWords {
 
-  private static final String[] tensNames = {
-      "",
-      " ten",
-      " twenty",
-      " thirty",
-      " forty",
-      " fifty",
-      " sixty",
-      " seventy",
-      " eighty",
-      " ninety"
-  };
-  private static final String[] numNames = {
-      "",
-      " one",
-      " two",
-      " three",
-      " four",
-      " five",
-      " six",
-      " seven",
-      " eight",
-      " nine",
-      " ten",
-      " eleven",
-      " twelve",
-      " thirteen",
-      " fourteen",
-      " fifteen",
-      " sixteen",
-      " seventeen",
-      " eighteen",
-      " nineteen"
-  };
-
-  private EnglishNumberToWords() {}
-
-  private static String convertLessThanOneThousand(int number) {
-    String soFar;
-
-    if (number % 100 < 20) {
-      soFar = numNames[number % 100];
-      number /= 100;
-    } else {
-      soFar = numNames[number % 10];
-      number /= 10;
-
-      soFar = tensNames[number % 10] + soFar;
-      number /= 10;
-    }
-    if (number == 0) {
-      return soFar;
-    }
-    return numNames[number] + " hundred" + soFar;
+  public static String convert(int number) {
+    return convert(String.valueOf(number));
   }
 
-  public static String convert(long number) {
-    // 0 to 999 999 999 999
-    if (number == 0) {
-      return "zero";
+  public static String convert(String number) {
+    String twodigitword = "";
+    String word = "";
+    String[] HTLC = {"", "Hundred", "Thousand", "Lakh", "Crore"}; //H-hundread , T-Thousand, ..
+    int split[] = {0, 2, 3, 5, 7, 9};
+    String[] temp = new String[split.length];
+    boolean addzero = true;
+    int len1 = number.length();
+    if (len1 > split[split.length - 1]) {
+      System.out.println("Error. Maximum Allowed digits " + split[split.length - 1]);
+      System.exit(0);
+    }
+    for (int l = 1; l < split.length; l++) {
+      if (number.length() == split[l]) {
+        addzero = false;
+      }
+    }
+    if (addzero == true) {
+      number = "0" + number;
+    }
+    int len = number.length();
+    int j = 0;
+    //spliting & putting numbers in temp array.
+    while (split[j] < len) {
+      int beg = len - split[j + 1];
+      int end = beg + split[j + 1] - split[j];
+      temp[j] = number.substring(beg, end);
+      j = j + 1;
     }
 
-    String snumber = Long.toString(number);
-
-    // pad with "0"
-    String mask = "000000000000";
-    DecimalFormat df = new DecimalFormat(mask);
-    snumber = df.format(number);
-
-    // XXXnnnnnnnnn
-    int billions = Integer.parseInt(snumber.substring(0, 3));
-    // nnnXXXnnnnnn
-    int millions = Integer.parseInt(snumber.substring(3, 6));
-    // nnnnnnXXXnnn
-    int hundredThousands = Integer.parseInt(snumber.substring(6, 9));
-    // nnnnnnnnnXXX
-    int thousands = Integer.parseInt(snumber.substring(9, 12));
-
-    String tradBillions;
-    switch (billions) {
-      case 0:
-        tradBillions = "";
-        break;
-      case 1:
-        tradBillions = convertLessThanOneThousand(billions)
-            + " billion ";
-        break;
-      default:
-        tradBillions = convertLessThanOneThousand(billions)
-            + " billion ";
+    for (int k = 0; k < j; k++) {
+      twodigitword = ConvertOnesTwos(temp[k]);
+      if (k >= 1) {
+        if (twodigitword.trim().length() != 0) {
+          word = twodigitword + " " + HTLC[k] + " " + word;
+        }
+      } else {
+        word = twodigitword;
+      }
     }
-    String result = tradBillions;
+    return (word);
+  }
 
-    String tradMillions;
-    switch (millions) {
-      case 0:
-        tradMillions = "";
-        break;
-      case 1:
-        tradMillions = convertLessThanOneThousand(millions)
-            + " million ";
-        break;
-      default:
-        tradMillions = convertLessThanOneThousand(millions)
-            + " million ";
+  private static String ConvertOnesTwos(String t) {
+    final String[] ones =
+        {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+            "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",
+            "Eighteen", "Nineteen"};
+    final String[] tens =
+        {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+
+    String word = "";
+    int num = Integer.parseInt(t);
+    if (num % 10 == 0) {
+      word = tens[num / 10] + " " + word;
+    } else if (num < 20) {
+      word = ones[num] + " " + word;
+    } else {
+      word = tens[(num - (num % 10)) / 10] + word;
+      word = word + " " + ones[num % 10];
     }
-    result = result + tradMillions;
-
-    String tradHundredThousands;
-    switch (hundredThousands) {
-      case 0:
-        tradHundredThousands = "";
-        break;
-      case 1:
-        tradHundredThousands = "one thousand ";
-        break;
-      default:
-        tradHundredThousands = convertLessThanOneThousand(hundredThousands)
-            + " thousand ";
-    }
-    result = result + tradHundredThousands;
-
-    String tradThousand;
-    tradThousand = convertLessThanOneThousand(thousands);
-    result = result + tradThousand;
-
-    // remove extra spaces!
-    return result.replaceAll("^\\s+", "").replaceAll("\\b\\s{2,}\\b", " ");
+    return word;
   }
 }

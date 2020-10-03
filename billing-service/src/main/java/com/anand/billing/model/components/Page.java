@@ -1,10 +1,13 @@
 package com.anand.billing.model.components;
 
 import com.anand.billing.constants.Constants;
+import com.anand.billing.utils.TotalUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import static com.anand.billing.utils.TotalUtils.getTotal;
+import static com.anand.billing.utils.TotalUtils.grandTotal;
 
 public class Page {
 
@@ -63,6 +66,11 @@ public class Page {
 
   public List<Particular> getParticulars() {
     return particulars;
+  }
+
+  public void calculateTotals(final Configuration configuration) {
+    setTotal(TotalUtils.getTotal(configuration.getRates(), particulars));
+    setGrandTotal(grandTotal(configuration.getRates(), total));
   }
 
   public void addParticular(final Particular particular) {

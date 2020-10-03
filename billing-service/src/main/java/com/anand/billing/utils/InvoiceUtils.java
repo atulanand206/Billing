@@ -86,11 +86,11 @@ public class InvoiceUtils {
 
   public static Table addParticulars(
       final Configuration configuration,
-      final List<Particular> particulars,
       final Page page) {
     Rates rates = configuration.getRates();
     Trip tripDetails = configuration.getTripDetails();
     Bank bankDetails = configuration.getBankDetails();
+    List<Particular> particulars = page.getParticulars();
     int total = page.getTotal();
     int grandTotal = page.getGrandTotal();
     Table table = new Table(new float[]{10F, 90F, 90F, 50F, 60F, 60F, 60F, 80F})
