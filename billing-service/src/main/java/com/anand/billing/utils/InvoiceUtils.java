@@ -5,7 +5,6 @@ import com.anand.billing.model.components.Configuration;
 import com.anand.billing.model.components.Page;
 import com.anand.billing.model.components.Particular;
 import com.anand.billing.model.components.Rates;
-import com.anand.billing.model.components.Trip;
 import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
@@ -13,13 +12,6 @@ import com.itextpdf.layout.property.TextAlignment;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import static com.anand.billing.utils.BankUtils.getAccountNumberCell;
-import static com.anand.billing.utils.BankUtils.getBankCell;
-import static com.anand.billing.utils.BankUtils.getIFSCCell;
-import static com.anand.billing.utils.CalculationUtils.getPercentage;
-import static com.anand.billing.utils.ITextUtils.addBlankCells;
-import static com.anand.billing.utils.ITextUtils.addTableCells;
-import static com.anand.billing.utils.ITextUtils.getTableCell;
 import static com.anand.billing.constants.Constants.AMOUNT;
 import static com.anand.billing.constants.Constants.DATE;
 import static com.anand.billing.constants.Constants.GST_RATE;
@@ -30,13 +22,19 @@ import static com.anand.billing.constants.Constants.QUANTITY;
 import static com.anand.billing.constants.Constants.RATE;
 import static com.anand.billing.constants.Constants.SL_NO;
 import static com.anand.billing.constants.Constants.VEHICLE_NUMBER;
+import static com.anand.billing.utils.BankUtils.getAccountNumberCell;
+import static com.anand.billing.utils.BankUtils.getBankCell;
+import static com.anand.billing.utils.BankUtils.getIFSCCell;
+import static com.anand.billing.utils.CalculationUtils.getPercentage;
+import static com.anand.billing.utils.ITextUtils.addBlankCells;
+import static com.anand.billing.utils.ITextUtils.addTableCells;
+import static com.anand.billing.utils.ITextUtils.getTableCell;
 import static com.anand.billing.utils.TotalUtils.addCgstRow;
 import static com.anand.billing.utils.TotalUtils.addGrandTotalRow;
 import static com.anand.billing.utils.TotalUtils.addIgstRow;
 import static com.anand.billing.utils.TotalUtils.addRoundOffRow;
 import static com.anand.billing.utils.TotalUtils.addSgstRow;
 import static com.anand.billing.utils.TotalUtils.addTotalRow;
-import static com.anand.billing.utils.TripUtils.getFromToCell;
 
 public class InvoiceUtils {
 
@@ -88,7 +86,6 @@ public class InvoiceUtils {
       final Configuration configuration,
       final Page page) {
     Rates rates = configuration.getRates();
-    Trip tripDetails = configuration.getTripDetails();
     Bank bankDetails = configuration.getBankDetails();
     List<Particular> particulars = page.getParticulars();
     int total = page.getTotal();
@@ -105,7 +102,7 @@ public class InvoiceUtils {
     addTableCells(addTotalRow(rates, total), table);
     addBlankCells(table);
     addTableCells(addSgstRow(rates, total), table);
-    table.addCell(getFromToCell(tripDetails));
+    addBlankCells(table);
     addTableCells(addCgstRow(rates, total), table);
     table.addCell(getBankCell(bankDetails));
     addTableCells(addIgstRow(rates, total), table);

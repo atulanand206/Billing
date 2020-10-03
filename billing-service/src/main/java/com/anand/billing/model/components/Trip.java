@@ -25,6 +25,11 @@ public class Trip {
   @JsonProperty(DRIVER_MOBILE_NUMBER)
   private String driverMobileNumber;
 
+  public Trip(final String from, final String to) {
+    this.from = from;
+    this.to = to;
+  }
+
   public String getFrom() {
     return from;
   }

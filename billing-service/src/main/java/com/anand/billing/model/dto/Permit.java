@@ -160,6 +160,10 @@ public class Permit {
     return permitNo;
   }
 
+  public String getPassNo() {
+    return passNo;
+  }
+
   public Date getIssuedOn() {
     return issuedOn;
   }
@@ -170,6 +174,14 @@ public class Permit {
 
   public int getMineralWt() {
     return mineralWt;
+  }
+
+  public String getDestination() {
+    return destination;
+  }
+
+  public String getConsignee() {
+    return consignee;
   }
 
   @Override

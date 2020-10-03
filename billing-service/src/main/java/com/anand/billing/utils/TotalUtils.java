@@ -6,7 +6,6 @@ import com.itextpdf.layout.element.Cell;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.text.WordUtils;
-import static com.anand.billing.utils.CalculationUtils.getPercentage;
 import static com.anand.billing.constants.Constants.CGST;
 import static com.anand.billing.constants.Constants.GRAND_TOTAL;
 import static com.anand.billing.constants.Constants.IGST;
@@ -14,6 +13,7 @@ import static com.anand.billing.constants.Constants.ROUND_OFF;
 import static com.anand.billing.constants.Constants.RS_IN_WORDS;
 import static com.anand.billing.constants.Constants.SGST;
 import static com.anand.billing.constants.Constants.TOTAL;
+import static com.anand.billing.utils.CalculationUtils.getPercentage;
 
 public class TotalUtils {
 
@@ -46,7 +46,7 @@ public class TotalUtils {
     cells.add(new Cell()
         .add(String.format(
             RS_IN_WORDS,
-            WordUtils.capitalize(EnglishNumberToWords.convert(grandTotal)).trim())));
+            WordUtils.capitalize(EnglishNumberToWords.convert(grandTotal)).trim().replaceAll("  ", " "))));
     return cells;
   }
 

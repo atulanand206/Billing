@@ -2,15 +2,12 @@ package com.anand.billing.service;
 
 import com.anand.billing.model.components.Configuration;
 import com.anand.billing.model.components.Page;
-import com.anand.billing.model.components.Particular;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.property.AreaBreakType;
-import java.io.EOFException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import static com.anand.billing.utils.EntityUtils.addEntityInfo;
 import static com.anand.billing.utils.HeaderUtils.addHeader;
@@ -23,9 +20,7 @@ import static com.anand.billing.utils.InvoiceUtils.addInvoiceInfo;
 import static com.anand.billing.utils.InvoiceUtils.addParticulars;
 import static com.anand.billing.utils.TargetUtils.addTarget;
 import static com.anand.billing.utils.TargetUtils.addTargetTable;
-import static com.anand.billing.utils.TotalUtils.getTotal;
 import static com.anand.billing.utils.TotalUtils.getTotalInWords;
-import static com.anand.billing.utils.TotalUtils.grandTotal;
 
 public class BillWriter {
 
@@ -83,8 +78,8 @@ public class BillWriter {
   }
 
   private void addPageTarget() {
-    addCells(addTarget(fConfiguration.getTarget()), fDocument);
-    fDocument.add(addTargetTable(fConfiguration.getTarget()));
+    addCells(addTarget(fCurrentPage), fDocument);
+    fDocument.add(addTargetTable(fCurrentPage.getTarget()));
   }
 
   private void addPageParticulars() {

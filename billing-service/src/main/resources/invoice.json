@@ -2,17 +2,11 @@
   "entity": {
     "gstin": "20AACFI2143J2ZW",
     "mobile_number": "9876543210",
-    "firm": "M/s Shailendra Kumar Singh",
+    "firm": "M/s INDIAN ELECTRICAL SERVICES",
     "proprietor": "Shailendra Kumar Singh",
     "home_address": "Bye Pass Road, Income Tax Office, Daltonganj",
-    "firm_address": "Crusher At.- Sehra, Satbarwa, Palamu (Jharkhand)"
-  },
-  "target": {
-    "bill_to": "Indian Electrical Services",
-    "address": "Abadganj",
-    "gstin": "20AACFI2143J2ZW",
-    "state_name": "Jharkhand",
-    "state_code": 20
+    "firm_address": "Crusher At.- Sehra, Satbarwa, Palamu (Jharkhand)",
+    "from": "Sehra"
   },
   "rates": {
     "gst_rate": 5,
@@ -22,13 +16,6 @@
     "rate_value": 28,
     "rate_unit": "(MT/CFT)",
     "quantity_unit": "(MT/CFT)"
-  },
-  "trip_details": {
-    "from": "Sehra",
-    "to": "Rajhara",
-    "lorry_number": "",
-    "driver_name_and_address": "",
-    "driver_mobile_number": ""
   },
   "bank_details": {
     "name_of_bank": "State Bank of India, Narsanda",

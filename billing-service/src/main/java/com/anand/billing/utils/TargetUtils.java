@@ -1,5 +1,6 @@
 package com.anand.billing.utils;
 
+import com.anand.billing.model.components.Page;
 import com.anand.billing.model.components.Target;
 import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.element.Cell;
@@ -14,15 +15,17 @@ import static com.anand.billing.constants.Constants.STATE;
 
 public class TargetUtils {
 
-  public static List<Cell> addTarget(final Target target) {
+  public static List<Cell> addTarget(final Page page) {
+    Target target = page.getTarget();
     List<Cell> cells = new ArrayList<>();
     Cell targetName = new Cell()
         .setTextAlignment(TextAlignment.CENTER)
         .setFontSize(18)
-        .add(String.format(MS, target.getBillTo()));
+        .add(String.format(MS, target != null ? target.getBillTo() : ""));
     Cell targetAddress = new Cell()
         .setTextAlignment(TextAlignment.CENTER)
-        .add(target.getAddress());
+        .add(target != null ? target.getAddress() : "");
+//    cells.add(getFromToCell(page.getTripDetails()));
     cells.add(targetName);
     cells.add(targetAddress);
     return cells;

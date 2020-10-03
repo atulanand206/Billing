@@ -10,7 +10,7 @@ public class Constants {
   public static final String PROP = "Prop. - %s";
   public static final String INVOICE_NO = "Invoice No. - %s";
   public static final String DATE = "Date - %s";
-  public static final String MS = "M/s %s";
+  public static final String MS = "%s";
   public static final String STATE = "State- %s";
   public static final String CODE = "Code- %s";
   public static final String SL_NO = "Sl. No.";
@@ -33,4 +33,7 @@ public class Constants {
   public static final String NAME_OF_BANK = "Name of Bank: %s";
   public static final String RS_IN_WORDS = "Rs. in words: %s Only";
   public static final String AUTHORISED_SIGNATORY = "Authorised Signatory";
+
+  public static final String STATE_NAME = "Jharkhand";
+  public static final int STATE_CODE = 20;
 }

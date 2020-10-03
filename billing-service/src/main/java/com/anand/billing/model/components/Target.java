@@ -25,6 +25,19 @@ public class Target {
   @JsonProperty(STATE_CODE)
   private int stateCode;
 
+  public Target(
+      final String billTo,
+      final String address,
+      final String gstin,
+      final String stateName,
+      final int stateCode) {
+    this.billTo = billTo;
+    this.address = address;
+    this.gstin = gstin;
+    this.stateName = stateName;
+    this.stateCode = stateCode;
+  }
+
   public String getBillTo() {
     return billTo;
   }
