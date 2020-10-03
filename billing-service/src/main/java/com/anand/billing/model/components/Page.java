@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import static com.anand.billing.utils.TotalUtils.getTotal;
 import static com.anand.billing.utils.TotalUtils.grandTotal;
 
 public class Page {
@@ -15,6 +14,7 @@ public class Page {
   private int grandTotal;
   private Date date;
   private int invoiceNumber;
+  private String destination = "";
   private final List<Particular> particulars;
 
   public Page(final Date date, final int invoiceNumber) {
@@ -68,6 +68,10 @@ public class Page {
     return particulars;
   }
 
+  public String getDestination() {
+    return destination;
+  }
+
   public void calculateTotals(final Configuration configuration) {
     setTotal(TotalUtils.getTotal(configuration.getRates(), particulars));
     setGrandTotal(grandTotal(configuration.getRates(), total));
@@ -75,6 +79,7 @@ public class Page {
 
   public void addParticular(final Particular particular) {
     if (getLatestParticular() == null || canParticularBeAdded(particular)) {
+      destination = particular.getDestination();
       particulars.add(particular);
     }
   }
@@ -82,7 +87,9 @@ public class Page {
   public boolean canParticularBeAdded(final Particular particular) {
     if (particulars.size() == Constants.PAGE_MAX_SIZE)
       return false;
-    return isDateEquals(date,particular.getDate());
+    return (getLatestParticular() == null
+        || (getLatestParticular() != null && getLatestParticular().getDestination()
+        .equals(particular.getDestination()) && isDateEquals(date, particular.getDate())));
   }
 
   private boolean isDateEquals(Date date1, Date date2) {
@@ -95,5 +102,17 @@ public class Page {
       return null;
     }
     return particulars.get(particulars.size() - 1);
+  }
+
+  public Target getTarget() {
+    if (getLatestParticular()!=null)
+      return getLatestParticular().getTarget();
+    return null;
+  }
+
+  public Trip getTripDetails() {
+    if (getLatestParticular()!=null)
+      return getLatestParticular().getTripDetails();
+    return null;
   }
 }

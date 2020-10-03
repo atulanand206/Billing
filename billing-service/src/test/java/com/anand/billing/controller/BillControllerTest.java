@@ -6,11 +6,7 @@ import com.anand.billing.model.components.Page;
 import com.anand.billing.model.dto.Permit;
 import com.anand.billing.service.BillWriter;
 import com.anand.billing.service.PermitToBillConvertor;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.IOException;
+import com.anand.billing.utils.JacksonUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import static com.anand.billing.utils.TestUtils.createInvoiceRequestBuilder;
+import static com.anand.billing.utils.NetworkUtils.createInvoiceRequestBuilder;
 import static com.anand.billing.utils.TestUtils.readFromCsv;
 import static com.anand.billing.utils.TestUtils.readFromJson;
 
@@ -81,19 +77,14 @@ public class BillControllerTest {
       permits.add(new Permit(item));
     }
     permits.forEach(System.out::println);
-    List<Page> pages = PermitToBillConvertor.convert(permits, 1);
+    Configuration configuration = JacksonUtils.readJSON();
+    List<Page> pages = PermitToBillConvertor.convert(permits, 1, configuration);
     pages.forEach(page -> page.getParticulars().forEach(
         System.out::println
     ));
-    Configuration configuration = readJSON();
     for (Page page : pages) {
       page.calculateTotals(configuration);
     }
     new BillWriter(configuration, "bill.pdf", pages).writeContent();
-  }
-
-  private Configuration readJSON() throws JsonParseException, JsonMappingException, IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    return mapper.readValue(readFromJson("invoice.json").replace("\n", ""), Configuration.class);
   }
 }

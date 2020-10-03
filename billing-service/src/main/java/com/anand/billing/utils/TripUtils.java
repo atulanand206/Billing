@@ -9,7 +9,9 @@ import static com.anand.billing.constants.Constants.FROM_TO;
 public class TripUtils {
   public static Cell getFromToCell(final Trip tripDetails) {
     return new Cell(1, 5)
-        .add(String.format(FROM_TO, tripDetails.getFrom(), tripDetails.getTo()))
+        .add(String.format(FROM_TO,
+            tripDetails != null ? tripDetails.getFrom() : "",
+            tripDetails != null ? tripDetails.getTo() : ""))
         .setTextAlignment(TextAlignment.LEFT)
         .setBorder(Border.NO_BORDER);
   }

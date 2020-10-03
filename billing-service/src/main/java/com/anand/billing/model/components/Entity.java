@@ -10,6 +10,7 @@ public class Entity {
   public static final String PROPRIETOR = "proprietor";
   public static final String HOME_ADDRESS = "home_address";
   public static final String FIRM_ADDRESS = "firm_address";
+  public static final String FROM = "from";
 
   @JsonProperty(GSTIN)
   private String gstin;
@@ -28,6 +29,9 @@ public class Entity {
 
   @JsonProperty(FIRM_ADDRESS)
   private String firmAddress;
+
+  @JsonProperty(FROM)
+  private String from;
 
   public String getGstin() {
     return gstin;
@@ -51,5 +55,9 @@ public class Entity {
 
   public String getFirmAddress() {
     return firmAddress;
+  }
+
+  public String getFrom() {
+    return from;
   }
 }
